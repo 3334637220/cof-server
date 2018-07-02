@@ -17,7 +17,7 @@ public class BlogDao {
 	}
 
 	public boolean addBlog(String userName, String text) {
-		String sql = "insert into blog VALUES (?,?)";
+		String sql = "insert into blog(userName, text) VALUES (?,?)";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);
@@ -60,6 +60,9 @@ public class BlogDao {
 				blog.setBlogId(rs.getInt(1));
 				blog.setUserName(rs.getString(2));
 				blog.setText(rs.getString(3));
+				blog.setUpNum(rs.getInt(4));
+				blog.setTime(rs.getDate(5));
+
 				blogs.add(blog);
 			}
 		} catch (SQLException e) {

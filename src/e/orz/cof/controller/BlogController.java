@@ -1,22 +1,32 @@
 package e.orz.cof.controller;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import e.orz.cof.model.Blog;
+import e.orz.cof.model.Comment;
+import e.orz.cof.model.Picture;
 import e.orz.cof.service.BlogService;
+import e.orz.cof.service.CommentService;
+import e.orz.cof.service.PictureService;
+import e.orz.cof.service.UserService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class BlogController {
 	BlogService blogService = new BlogService();
+	UserService userService = new UserService();
+	CommentService commentService = new CommentService();
+	PictureService pictureService = new PictureService();
 
-	@RequestMapping(value = "/addBlog.do")
+	@RequestMapping(method = RequestMethod.POST, value = "/addBlog.do")
 	public void addBlog(HttpServletRequest request, HttpServletResponse response) {
 		String userName = request.getParameter("userName");
 		String text = request.getParameter("text");
@@ -34,7 +44,7 @@ public class BlogController {
 		}
 	}
 
-	@RequestMapping(value = "/delBlog.do")
+	@RequestMapping(method = RequestMethod.POST, value = "/delBlog.do")
 	public void deleteBlog(HttpServletRequest request, HttpServletResponse response) {
 		String userName = request.getParameter("userName");
 		int blogId = Integer.parseInt(request.getParameter("blogId"));
@@ -52,7 +62,7 @@ public class BlogController {
 		}
 	}
 
-	@RequestMapping(value = "/getBlogs.do")
+	@RequestMapping(method = RequestMethod.POST, value = "/getBlogs.do")
 	public void getBlogs(HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<Blog> blogs = blogService.getAllBlog();
 		JSONArray ja = new JSONArray();
@@ -61,6 +71,25 @@ public class BlogController {
 			jo.put("blogId", b.getBlogId());
 			jo.put("userName", b.getUserName());
 			jo.put("text", b.getText());
+			jo.put("upNum", b.getUpNum());
+			jo.put("time", getDateDis(b.getTime().toInstant(), Instant.now()));
+			jo.put("faceUrl", userService.getUser(b.getUserName()).getFaceUrl());
+
+			JSONArray pictureJa = new JSONArray();
+			for (Picture p : pictureService.getPicturesById(b.getBlogId())) {
+				pictureJa.add(p.getImageUrl());
+			}
+			jo.put("pictures", pictureJa);
+
+			JSONArray commentJa = new JSONArray();
+			for (Comment c : commentService.getCommentsById(b.getBlogId())) {
+				JSONObject commentJo = new JSONObject();
+				commentJo.put("userName", c.getUserName());
+				commentJo.put("text", c.getText());
+				commentJa.add(commentJo);
+			}
+			jo.put("comments", commentJa);
+
 			ja.add(jo);
 		}
 		try {
@@ -69,5 +98,33 @@ public class BlogController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private String getDateDis(Instant endDate, Instant nowDate) {
+
+		long nd = 24 * 60 * 60;
+		long nh = 60 * 60;
+		long nm = 60;
+		// long ns = 1000;
+		// 获得两个时间的秒时间差异
+		long diff = nowDate.getEpochSecond() - endDate.getEpochSecond();
+		// 计算差多少天
+		long day = diff / nd;
+		// 计算差多少小时
+		long hour = diff % nd / nh;
+		// 计算差多少分钟
+		long min = diff % nd % nh / nm;
+		// 计算差多少秒//输出结果
+		// long sec = diff % nd % nh % nm / ns;
+		StringBuilder sb = new StringBuilder();
+		if (day > 0) {
+			sb.append(day + "天");
+		} else if (hour > 0) {
+			sb.append(hour + "小时");
+		} else if (min > 0) {
+			sb.append(min + "分钟");
+		}
+
+		return sb.toString();
 	}
 }

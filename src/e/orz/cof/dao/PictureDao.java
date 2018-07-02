@@ -1,9 +1,13 @@
 package e.orz.cof.dao;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
+
+import e.orz.cof.model.Picture;
 
 public class PictureDao {
 	private Connection conn;
@@ -29,7 +33,7 @@ public class PictureDao {
 	}
 
 	public boolean deletePicture(int blogId) {
-		String sql = "delete * from user_like where blogId=?";
+		String sql = "delete from picture where blogId=?";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);
@@ -41,6 +45,27 @@ public class PictureDao {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public ArrayList<Picture> getPicturesById(int blogId) {
+		ArrayList<Picture> pictures = new ArrayList<>();
+		String sql = "select * from picture where blogId=?";
+		PreparedStatement ps;
+		try {
+			ps = (PreparedStatement) conn.prepareStatement(sql);
+			ps.setInt(1, blogId);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Picture picture = new Picture();
+				picture.setBlogId(blogId);
+				picture.setImageUrl(rs.getString(2));
+				pictures.add(picture);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return pictures;
 	}
 
 }

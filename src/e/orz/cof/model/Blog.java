@@ -1,9 +1,29 @@
 package e.orz.cof.model;
 
+import java.sql.Date;
+
 public class Blog {
 	private int blogId;
 	private String userName;
 	private String text;
+	private int upNum;
+	private Date time;
+
+	public Date getTime() {
+		return time;
+	}
+
+	public void setTime(Date time) {
+		this.time = time;
+	}
+
+	public int getUpNum() {
+		return upNum;
+	}
+
+	public void setUpNum(int upNum) {
+		this.upNum = upNum;
+	}
 
 	public Blog() {
 	}
@@ -12,6 +32,13 @@ public class Blog {
 		this.blogId = blogId;
 		this.userName = userName;
 		this.text = text;
+	}
+
+	public Blog(int blogId, String userName, String text, int upNum) {
+		this.blogId = blogId;
+		this.userName = userName;
+		this.text = text;
+		this.upNum = upNum;
 	}
 
 	public Blog(String userName, String text) {

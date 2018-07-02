@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import e.orz.cof.model.Comment;
 import e.orz.cof.service.CommentService;
@@ -16,7 +17,7 @@ import net.sf.json.JSONObject;
 public class CommentController {
 	CommentService commentService = new CommentService();
 
-	@RequestMapping(value = "/addComment.do")
+	@RequestMapping(method = RequestMethod.POST, value = "/addComment.do")
 	public void addComment(HttpServletRequest request, HttpServletResponse response) {
 		String userName = request.getParameter("userName");
 		String text = request.getParameter("text");
@@ -34,7 +35,7 @@ public class CommentController {
 		}
 	}
 
-	@RequestMapping(value = "/getComments.do")
+	@RequestMapping(method = RequestMethod.POST, value = "/getComments.do")
 	public void getComments(HttpServletRequest request, HttpServletResponse response) {
 		int blogId = Integer.parseInt(request.getParameter("blogId"));
 		ArrayList<Comment> comments = commentService.getCommentsById(blogId);

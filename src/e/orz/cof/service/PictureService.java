@@ -1,6 +1,9 @@
 package e.orz.cof.service;
 
+import java.util.ArrayList;
+
 import e.orz.cof.dao.PictureDao;
+import e.orz.cof.model.Picture;
 
 public class PictureService {
 	private PictureDao pictureDao;
@@ -15,5 +18,9 @@ public class PictureService {
 
 	public boolean deletePicture(int blogId) {
 		return pictureDao.deletePicture(blogId);
+	}
+
+	public ArrayList<Picture> getPicturesById(int blogId) {
+		return pictureDao.getPicturesById(blogId);
 	}
 }

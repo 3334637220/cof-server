@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import e.orz.cof.service.UpNumService;
 
@@ -15,7 +16,7 @@ public class UpNumController {
 
 	UpNumService upNumService = new UpNumService();
 
-	@RequestMapping(value = "/updateLike.do")
+	@RequestMapping(method = RequestMethod.POST, value = "/updateLike.do")
 	public void like(HttpServletRequest request, HttpServletResponse response) {
 
 		String userName = request.getParameter("userName");
@@ -44,7 +45,7 @@ public class UpNumController {
 		}
 	}
 
-	@RequestMapping(value = "/checkLike.do")
+	@RequestMapping(method = RequestMethod.POST, value = "/checkLike.do")
 	public void checkLike(HttpServletRequest request, HttpServletResponse response) {
 		String userName = request.getParameter("userName");
 		int blogId = Integer.parseInt(request.getParameter("blogId"));

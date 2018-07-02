@@ -35,7 +35,7 @@ public class UserController {
 
 		} else {
 			msg = "用户名或密码错误";
-			jo.put("staus", "error");
+			jo.put("status", "error");
 		}
 		try {
 			response.setCharacterEncoding("utf8");

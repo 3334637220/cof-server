@@ -33,4 +33,8 @@ public class UserService {
 		return false;
 	}
 
+	public User getUser(String userName) {
+		return userDao.queryUser(userName);
+	}
+
 }
