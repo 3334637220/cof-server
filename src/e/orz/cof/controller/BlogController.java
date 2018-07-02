@@ -3,10 +3,12 @@ package e.orz.cof.controller;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,6 +22,7 @@ import e.orz.cof.service.UserService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+@Controller
 public class BlogController {
 	BlogService blogService = new BlogService();
 	UserService userService = new UserService();
@@ -31,14 +34,20 @@ public class BlogController {
 		String userName = request.getParameter("userName");
 		String text = request.getParameter("text");
 		String msg;
-		if (blogService.addBlog(userName, text)) {
+		int blogId = blogService.addBlog(userName, text);
+		JSONObject jo = new JSONObject();
+		if (blogId >= 0) {
 			msg = "发表成功";
+			jo.put("status", "ok");
+			jo.put("blogId", blogId);
+
 		} else {
 			msg = "发表失败";
+			jo.put("status", "error");
 		}
 		try {
 			response.setCharacterEncoding("utf8");
-			response.getWriter().write(msg);
+			response.getWriter().write(jo.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,7 +71,7 @@ public class BlogController {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/getBlogs.do")
+	@RequestMapping(value = "/getBlogs.do")
 	public void getBlogs(HttpServletRequest request, HttpServletResponse response) {
 		ArrayList<Blog> blogs = blogService.getAllBlog();
 		JSONArray ja = new JSONArray();
@@ -72,7 +81,7 @@ public class BlogController {
 			jo.put("userName", b.getUserName());
 			jo.put("text", b.getText());
 			jo.put("upNum", b.getUpNum());
-			jo.put("time", getDateDis(b.getTime().toInstant(), Instant.now()));
+			jo.put("time", getDateDis(b.getTime(), Date.from(Instant.now())));
 			jo.put("faceUrl", userService.getUser(b.getUserName()).getFaceUrl());
 
 			JSONArray pictureJa = new JSONArray();
@@ -95,19 +104,19 @@ public class BlogController {
 		try {
 			response.setCharacterEncoding("utf8");
 			response.getWriter().write(ja.toString());
+			System.out.println(ja.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private String getDateDis(Instant endDate, Instant nowDate) {
-
-		long nd = 24 * 60 * 60;
-		long nh = 60 * 60;
-		long nm = 60;
+	private String getDateDis(Date date, Date now) {
+		long nd = 1000 * 24 * 60 * 60;
+		long nh = 1000 * 60 * 60;
+		long nm = 1000 * 60;
 		// long ns = 1000;
 		// 获得两个时间的秒时间差异
-		long diff = nowDate.getEpochSecond() - endDate.getEpochSecond();
+		long diff = date.getTime() - now.getTime();
 		// 计算差多少天
 		long day = diff / nd;
 		// 计算差多少小时

@@ -16,20 +16,23 @@ public class BlogDao {
 		conn = DB.getConnection();
 	}
 
-	public boolean addBlog(String userName, String text) {
-		String sql = "insert into blog(userName, text) VALUES (?,?)";
+	public int addBlog(String userName, String text) {
+		String sql = "insert into blog(userName, text) VALUES (?,?);";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);
 			ps.setString(1, userName);
 			ps.setString(2, text);
-			if (ps.executeUpdate() > 0) {
-				return true;
+			ps.executeUpdate();
+			ps = (PreparedStatement) conn.prepareStatement("select LAST_INSERT_ID()");
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				return rs.getInt(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return -1;
 	}
 
 	public boolean deleteBlog(int blogId, String userName) {
@@ -61,8 +64,7 @@ public class BlogDao {
 				blog.setUserName(rs.getString(2));
 				blog.setText(rs.getString(3));
 				blog.setUpNum(rs.getInt(4));
-				blog.setTime(rs.getDate(5));
-
+				blog.setTime(rs.getTimestamp(5));
 				blogs.add(blog);
 			}
 		} catch (SQLException e) {

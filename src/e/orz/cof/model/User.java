@@ -17,6 +17,7 @@ public class User {
 		this.userName = userName;
 		this.password = password;
 		this.faceUrl = faceUrl;
+
 	}
 
 	public String getUserName() {

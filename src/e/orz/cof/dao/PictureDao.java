@@ -17,7 +17,7 @@ public class PictureDao {
 	}
 
 	public boolean addPicture(int blogId, String imageUrl) {
-		String sql = "insert into picture VALUES (?,?)";
+		String sql = "insert into blog_picture VALUES (?,?)";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);
@@ -33,7 +33,7 @@ public class PictureDao {
 	}
 
 	public boolean deletePicture(int blogId) {
-		String sql = "delete from picture where blogId=?";
+		String sql = "delete from blog_picture where blogId=?";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);
@@ -49,7 +49,7 @@ public class PictureDao {
 
 	public ArrayList<Picture> getPicturesById(int blogId) {
 		ArrayList<Picture> pictures = new ArrayList<>();
-		String sql = "select * from picture where blogId=?";
+		String sql = "select * from blog_picture where blogId=?";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);

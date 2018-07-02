@@ -1,6 +1,6 @@
 package e.orz.cof.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Blog {
 	private int blogId;

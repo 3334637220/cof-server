@@ -17,7 +17,7 @@ public class CommentDao {
 	}
 
 	public boolean addComment(String userName, String text) {
-		String sql = "insert into comment (userName, text) VALUES (?,?)";
+		String sql = "insert into blog_comment (userName, text) VALUES (?,?)";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);
@@ -33,7 +33,7 @@ public class CommentDao {
 	}
 
 	public boolean deleteComment(int blogId) {
-		String sql = "delete from comment where blogId=?";
+		String sql = "delete from blog_comment where blogId=?";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);
@@ -49,7 +49,7 @@ public class CommentDao {
 
 	public ArrayList<Comment> getCommentsById(int blogId) {
 		ArrayList<Comment> comments = new ArrayList<>();
-		String sql = "select * from comment where blogId=?";
+		String sql = "select * from blog_comment where blogId=?";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);

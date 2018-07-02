@@ -15,10 +15,13 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import e.orz.cof.service.PictureService;
 import e.orz.cof.util.IdGenerator;
 
 @Controller
 public class PictureController {
+
+	PictureService pictureService = new PictureService();
 
 	// 上传图片文件
 	@RequestMapping(value = "/upload.do")
@@ -60,6 +63,13 @@ public class PictureController {
 			System.out.println(message);
 			response.getWriter().write(message);
 		}
+	}
+
+	@RequestMapping(value = "/addPicture.do")
+	public void addPicture(HttpServletRequest request, HttpServletResponse response) {
+		int blogId = Integer.valueOf(request.getParameter("blogId"));
+		String imageUrl = request.getParameter("imageUrl");
+		pictureService.addPicture(blogId, imageUrl);
 	}
 
 }
