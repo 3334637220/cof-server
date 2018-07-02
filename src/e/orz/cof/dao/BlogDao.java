@@ -51,6 +51,28 @@ public class BlogDao {
 		return false;
 	}
 
+	public Blog getBlogById(int blogId) {
+		String sql = "select * from blog where blogId=?";
+		PreparedStatement ps;
+		try {
+			ps = (PreparedStatement) conn.prepareStatement(sql);
+			ps.setInt(1, blogId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Blog blog = new Blog();
+				blog.setBlogId(rs.getInt(1));
+				blog.setUserName(rs.getString(2));
+				blog.setText(rs.getString(3));
+				blog.setUpNum(rs.getInt(4));
+				blog.setTime(rs.getTimestamp(5));
+				return blog;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public ArrayList<Blog> getAllBlog() {
 		ArrayList<Blog> blogs = new ArrayList<>();
 		String sql = "select * from blog";

@@ -12,8 +12,8 @@ public class CommentService {
 		commentDao = new CommentDao();
 	}
 
-	public boolean addComment(String userName, String text) {
-		return commentDao.addComment(userName, text);
+	public boolean addComment(int blogId, String userName, String text) {
+		return commentDao.addComment(blogId, userName, text);
 	}
 
 	public boolean deleteComment(int blogId) {

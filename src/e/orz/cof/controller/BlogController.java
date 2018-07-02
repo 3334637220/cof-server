@@ -18,6 +18,7 @@ import e.orz.cof.model.Picture;
 import e.orz.cof.service.BlogService;
 import e.orz.cof.service.CommentService;
 import e.orz.cof.service.PictureService;
+import e.orz.cof.service.UpNumService;
 import e.orz.cof.service.UserService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -28,6 +29,7 @@ public class BlogController {
 	UserService userService = new UserService();
 	CommentService commentService = new CommentService();
 	PictureService pictureService = new PictureService();
+	UpNumService upNumService = new UpNumService();
 
 	@RequestMapping(method = RequestMethod.POST, value = "/addBlog.do")
 	public void addBlog(HttpServletRequest request, HttpServletResponse response) {
@@ -48,6 +50,7 @@ public class BlogController {
 		try {
 			response.setCharacterEncoding("utf8");
 			response.getWriter().write(jo.toString());
+			System.out.println(msg);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -73,6 +76,7 @@ public class BlogController {
 
 	@RequestMapping(value = "/getBlogs.do")
 	public void getBlogs(HttpServletRequest request, HttpServletResponse response) {
+		String userName = request.getParameter("userName");
 		ArrayList<Blog> blogs = blogService.getAllBlog();
 		JSONArray ja = new JSONArray();
 		for (Blog b : blogs) {
@@ -83,7 +87,8 @@ public class BlogController {
 			jo.put("upNum", b.getUpNum());
 			jo.put("time", getDateDis(b.getTime(), Date.from(Instant.now())));
 			jo.put("faceUrl", userService.getUser(b.getUserName()).getFaceUrl());
-
+			jo.put("isLike", upNumService.checkUserLike(userName, b.getBlogId()));
+			jo.put("isMine", userName.equals(b.getUserName()));
 			JSONArray pictureJa = new JSONArray();
 			for (Picture p : pictureService.getPicturesById(b.getBlogId())) {
 				pictureJa.add(p.getImageUrl());
@@ -114,9 +119,9 @@ public class BlogController {
 		long nd = 1000 * 24 * 60 * 60;
 		long nh = 1000 * 60 * 60;
 		long nm = 1000 * 60;
-		// long ns = 1000;
+		long ns = 1000;
 		// 获得两个时间的秒时间差异
-		long diff = date.getTime() - now.getTime();
+		long diff = now.getTime() - date.getTime();
 		// 计算差多少天
 		long day = diff / nd;
 		// 计算差多少小时
@@ -124,14 +129,16 @@ public class BlogController {
 		// 计算差多少分钟
 		long min = diff % nd % nh / nm;
 		// 计算差多少秒//输出结果
-		// long sec = diff % nd % nh % nm / ns;
+		long sec = diff % nd % nh % nm / ns;
 		StringBuilder sb = new StringBuilder();
 		if (day > 0) {
-			sb.append(day + "天");
+			sb.append(day + "天前");
 		} else if (hour > 0) {
-			sb.append(hour + "小时");
+			sb.append(hour + "小时前");
 		} else if (min > 0) {
-			sb.append(min + "分钟");
+			sb.append(min + "分钟前");
+		} else if (sec > 0) {
+			sb.append(sec + "秒前");
 		}
 
 		return sb.toString();

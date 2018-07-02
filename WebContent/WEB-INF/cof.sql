@@ -1,7 +1,7 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : local
+ Source Server         : localhost
  Source Server Type    : MySQL
  Source Server Version : 50721
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 01/07/2018 22:08:19
+ Date: 02/07/2018 16:58:53
 */
 
 SET NAMES utf8mb4;
@@ -25,17 +25,20 @@ CREATE TABLE `blog`  (
   `blogId` int(11) NOT NULL AUTO_INCREMENT,
   `userName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `text` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `upNum` int(10) UNSIGNED ZEROFILL NULL DEFAULT NULL,
+  `upNum` int(10) UNSIGNED NULL DEFAULT 0,
+  `time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`blogId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blog_comment
 -- ----------------------------
 DROP TABLE IF EXISTS `blog_comment`;
 CREATE TABLE `blog_comment`  (
-  `userName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `text` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+  `blogId` int(11) NOT NULL,
+  `userName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `text` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`blogId`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -54,7 +57,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
   `userName` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `faceUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `faceUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
   PRIMARY KEY (`userName`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

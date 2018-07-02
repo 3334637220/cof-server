@@ -16,13 +16,14 @@ public class CommentDao {
 		conn = DB.getConnection();
 	}
 
-	public boolean addComment(String userName, String text) {
-		String sql = "insert into blog_comment (userName, text) VALUES (?,?)";
+	public boolean addComment(int blogId, String userName, String text) {
+		String sql = "insert into blog_comment VALUES (?,?,?)";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);
-			ps.setString(1, userName);
-			ps.setString(2, text);
+			ps.setInt(1, blogId);
+			ps.setString(2, userName);
+			ps.setString(3, text);
 			if (ps.executeUpdate() > 0) {
 				return true;
 			}

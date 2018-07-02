@@ -21,10 +21,11 @@ public class CommentController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/addComment.do")
 	public void addComment(HttpServletRequest request, HttpServletResponse response) {
+		int blogId = Integer.parseInt(request.getParameter("blogId"));
 		String userName = request.getParameter("userName");
 		String text = request.getParameter("text");
 		String msg;
-		if (commentService.addComment(userName, text)) {
+		if (commentService.addComment(blogId, userName, text)) {
 			msg = "评论成功";
 		} else {
 			msg = "评论失败";

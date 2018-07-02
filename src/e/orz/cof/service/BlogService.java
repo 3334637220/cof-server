@@ -7,8 +7,8 @@ import e.orz.cof.model.Blog;
 
 public class BlogService {
 	private BlogDao blogDao;
-	private PictureService pictureService;
-	private CommentService commentService;
+	private PictureService pictureService = new PictureService();
+	private CommentService commentService = new CommentService();
 
 	public BlogService() {
 		blogDao = new BlogDao();
@@ -25,6 +25,10 @@ public class BlogService {
 			return true;
 		}
 		return false;
+	}
+
+	public Blog getBlogById(int blogId) {
+		return blogDao.getBlogById(blogId);
 	}
 
 	public ArrayList<Blog> getAllBlog() {
