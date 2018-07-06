@@ -8,6 +8,15 @@ public class Blog {
 	private String text;
 	private int upNum;
 	private Date time;
+	private String location;
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
 	public Date getTime() {
 		return time;

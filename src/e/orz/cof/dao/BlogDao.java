@@ -16,13 +16,14 @@ public class BlogDao {
 		conn = DB.getConnection();
 	}
 
-	public int addBlog(String userName, String text) {
-		String sql = "insert into blog(userName, text) VALUES (?,?);";
+	public int addBlog(String userName, String text, String location) {
+		String sql = "insert into blog(userName, text, location) VALUES (?,?,?);";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) conn.prepareStatement(sql);
 			ps.setString(1, userName);
 			ps.setString(2, text);
+			ps.setString(3, location);
 			ps.executeUpdate();
 			ps = (PreparedStatement) conn.prepareStatement("select LAST_INSERT_ID()");
 			ResultSet rs = ps.executeQuery();
@@ -65,6 +66,7 @@ public class BlogDao {
 				blog.setText(rs.getString(3));
 				blog.setUpNum(rs.getInt(4));
 				blog.setTime(rs.getTimestamp(5));
+				blog.setLocation(rs.getString(6));
 				return blog;
 			}
 		} catch (SQLException e) {
@@ -87,6 +89,7 @@ public class BlogDao {
 				blog.setText(rs.getString(3));
 				blog.setUpNum(rs.getInt(4));
 				blog.setTime(rs.getTimestamp(5));
+				blog.setLocation(rs.getString(6));
 				blogs.add(blog);
 			}
 		} catch (SQLException e) {

@@ -35,8 +35,9 @@ public class BlogController {
 	public void addBlog(HttpServletRequest request, HttpServletResponse response) {
 		String userName = request.getParameter("userName");
 		String text = request.getParameter("text");
+		String location = request.getParameter("location");
 		String msg;
-		int blogId = blogService.addBlog(userName, text);
+		int blogId = blogService.addBlog(userName, text, location);
 		JSONObject jo = new JSONObject();
 		if (blogId >= 0) {
 			msg = "发表成功";
@@ -87,6 +88,7 @@ public class BlogController {
 			jo.put("upNum", b.getUpNum());
 			jo.put("time", getDateDis(b.getTime(), Date.from(Instant.now())));
 			jo.put("faceUrl", userService.getUser(b.getUserName()).getFaceUrl());
+			jo.put("location", b.getLocation());
 			jo.put("isLike", upNumService.checkUserLike(userName, b.getBlogId()));
 			jo.put("isMine", userName.equals(b.getUserName()));
 			JSONArray pictureJa = new JSONArray();

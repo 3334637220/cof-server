@@ -14,8 +14,8 @@ public class BlogService {
 		blogDao = new BlogDao();
 	}
 
-	public int addBlog(String userName, String text) {
-		return blogDao.addBlog(userName, text);
+	public int addBlog(String userName, String text, String location) {
+		return blogDao.addBlog(userName, text, location);
 	}
 
 	public boolean deleteBlog(int blogId, String userName) {
