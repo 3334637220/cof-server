@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 03/07/2018 10:00:29
+ Date: 07/07/2018 08:31:20
 */
 
 SET NAMES utf8mb4;
@@ -27,8 +27,9 @@ CREATE TABLE `blog`  (
   `text` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `upNum` int(10) UNSIGNED NULL DEFAULT 0,
   `time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0),
+  `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`blogId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 49 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for blog_comment
